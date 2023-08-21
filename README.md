@@ -28,7 +28,9 @@ You can assign a buffer to a number by tapping `<Leader>h{num}`
 This will assign the current opened buffer to {num}
 
 
+
 To get back to that buffer you just press `g{num}`
+
 
 
 You can move fast through them using < and >
