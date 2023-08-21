@@ -1,5 +1,3 @@
-let g:_c64cosmin_Harpwn_MenuBufferName = "_c64cosmin_Harpwn_Menu_Buffer"
-
 function! _c64cosmin_Harpwn_Init()
 	if get(g:, "_c64cosmin_Harpwn_Initialized") != 1
 		let g:_c64cosmin_Harpwn_ShowHelp = 0
@@ -8,7 +6,6 @@ function! _c64cosmin_Harpwn_Init()
 		let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 		let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 		let g:_c64cosmin_Harpwn_MenuWinID = -1
-		let g:_c64cosmin_Harpwn_MenuBufferID = -1
 		let g:_c64cosmin_Harpwn_Initialized = 1
 		if get(g:, "Harpwn_DontShowTip") == 1
 			let g:_c64cosmin_Harpwn_ShowHelpTip = 0
@@ -140,7 +137,6 @@ function! _c64cosmin_Harpwn_Menu()
 		return
 	endif
 
-    call _c64cosmin_Harpwn_MenuBufferCreate()
     let entry_list = _c64cosmin_Harpwn_MenuBufferFill()
 
     let options = {
@@ -157,7 +153,10 @@ function! _c64cosmin_Harpwn_Menu()
      \ ,'cursorline': 1
      \ ,'mapping': 1
      \ }
-    let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(g:_c64cosmin_Harpwn_MenuBufferID, options)
+
+    let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(entry_list, options)
+
+	"put cursor to last jump
     for it in range(1, g:_c64cosmin_Harpwn_CurrentIndex)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
@@ -166,34 +165,26 @@ function! _c64cosmin_Harpwn_Menu()
 endfunction
 
 function! _c64cosmin_Harpwn_MenuClose(index)
-    call _c64cosmin_Harpwn_MenuBufferDelete()
     call _c64cosmin_Harpwn_PopupClose(g:_c64cosmin_Harpwn_MenuWinID, a:index)
 	let g:_c64cosmin_Harpwn_MenuWinID = -1
 endfunction
 
-function! _c64cosmin_Harpwn_MenuBufferCreate()
-    if g:_c64cosmin_Harpwn_MenuBufferID == -1
-        exec "badd " . g:_c64cosmin_Harpwn_MenuBufferName
-        let g:_c64cosmin_Harpwn_MenuBufferID = bufnr(g:_c64cosmin_Harpwn_MenuBufferName)
-        call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&hidden', 1)
-        call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&buflisted', 0)
-        call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&buftype', 'nowrite')
-    endif
-    let g:_c64cosmin_Harpwn_MenuBufferID = bufnr(g:_c64cosmin_Harpwn_MenuBufferName)
-endfunction
-
-function! _c64cosmin_Harpwn_MenuBufferDelete()
-    if g:_c64cosmin_Harpwn_MenuBufferID != -1
-        exec "bwipeout! " . g:_c64cosmin_Harpwn_MenuBufferName
-        let g:_c64cosmin_Harpwn_MenuBufferID = -1
-    endif
-endfunction
-
 function! _c64cosmin_Harpwn_MenuBufferFill()
-    if g:_c64cosmin_Harpwn_MenuBufferID == -1
-        return []
-    endif
+	let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
 
+    let entry_list = _c64cosmin_Harpwn_MenuGetLines()
+
+    "do a clean up just in case
+    call deletebufline(bufid, 1, '$')
+
+    for it in range(0, len(entry_list) - 1)
+        call setbufline(bufid, it + 1, entry_list[it])
+    endfor
+
+    return entry_list
+endfunction
+
+function! _c64cosmin_Harpwn_MenuGetLines()
     let entry_list = []
 
     for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
@@ -232,15 +223,6 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
 		call add(entry_list, "[num] - open entry with [num] id")
 		call add(entry_list, "q     - close menu")
 	endif
-
-    call bufload(g:_c64cosmin_Harpwn_MenuBufferID)
-
-    "do a clean up just in case
-    call deletebufline(g:_c64cosmin_Harpwn_MenuBufferID, 1, '$')
-
-    for it in range(0, len(entry_list) - 1)
-        call setbufline(g:_c64cosmin_Harpwn_MenuBufferID, it + 1, entry_list[it])
-    endfor
 
     return entry_list
 endfunction
@@ -352,8 +334,9 @@ function! _c64cosmin_Harpwn_MenuGetLineCount()
 endfunction
 
 function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
+	let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
-    let linestring = getbufline(g:_c64cosmin_Harpwn_MenuBufferID, line)[0]
+    let linestring = getbufline(bufid, line)[0]
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
     if index == 0
         let index = 10
@@ -363,7 +346,10 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
 	if has('nvim')
-		echo ">" . a:info . " " . a:options
+		for [key, value] in items(a:options)
+			echo key . ': ' . value
+		endfor
+		echo "glorf " . a:info
 		echo "Doesn't work for Neovim yet :("
 	else
 		return popup_create(a:info, a:options)
@@ -372,7 +358,7 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupClose(popupid, option)
 	if has('nvim')
-		echo ">" . a:popupid . " " . a:option
+		echom "glorg " . a:popupid . " " . a:option
 		echo "Doesn't work for Neovim yet :("
 	else
 		call popup_close(a:popupid, a:option)
