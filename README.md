@@ -22,8 +22,23 @@ To get more info directly in Vim
 
 ### Easy setup
 
-This is my own configuration\
-\
+This is my own configuration
+
+To add a new buffer just press `+`
+
+To open the menu you press `=`
+
+You can move fast through them using `<` and `>`
+
+```vim
+nmap <silent> + :HarpwnAdd<CR>
+nmap <silent> = :HarpwnMenu<CR>
+nmap <silent> > :HarpwnNext 1<CR>
+nmap <silent> < :HarpwnNext -1<CR>
+```
+
+### Setup with more control
+
 To assign the current buffer to the list just press `<Leader>H`\
 \
 You can also assign a buffer to a number key by tapping `<Leader>H{num}`\
