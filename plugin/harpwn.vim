@@ -1,13 +1,16 @@
 let g:_c64cosmin_Harpwn_MenuBufferName = "_c64cosmin_Harpwn_Menu_Buffer"
 
-if get(g:, "_c64cosmin_Harpwn_Init") != 1
-    let g:_c64cosmin_Harpwn_CurrentIndex = 0
-    let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-    let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-    let g:_c64cosmin_Harpwn_MenuWinID = -1
-    let g:_c64cosmin_Harpwn_MenuBufferID = -1
-    let g:_c64cosmin_Harpwn_Init = 1
-endif
+function! _c64cosmin_Harpwn_Init()
+	if get(g:, "_c64cosmin_Harpwn_Initialized") != 1
+		let g:_c64cosmin_Harpwn_ShowHelp = 0
+		let g:_c64cosmin_Harpwn_CurrentIndex = 0
+		let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		let g:_c64cosmin_Harpwn_MenuWinID = -1
+		let g:_c64cosmin_Harpwn_MenuBufferID = -1
+		let g:_c64cosmin_Harpwn_Initialized = 1
+	endif
+endfunction
 
 function! _c64cosmin_Harpwn_Set(index)
     let g:_c64cosmin_Harpwn_CurrentIndex = a:index
@@ -193,6 +196,24 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
         endif
     endfor
 
+	if len(entry_list) == 0
+		call add(entry_list, "[x] No entries")
+	endif
+
+
+	call add(entry_list, "")
+	call add(entry_list, "")
+	call add(entry_list, "?     - Toggle Help")
+	if g:_c64cosmin_Harpwn_ShowHelp == 1
+		call add(entry_list, "jk    - move up/down")
+		call add(entry_list, "JK    - move entry up/down")
+		call add(entry_list, "D     - delete entry")
+		call add(entry_list, "C     - clear all entries")
+		call add(entry_list, "Enter - open that entry")
+		call add(entry_list, "[num] - open entry with [num] id")
+		call add(entry_list, "q     - close menu")
+	endif
+
     call bufload(g:_c64cosmin_Harpwn_MenuBufferID)
 
     "do a clean up just in case
@@ -261,10 +282,23 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
         endif
     endif
 
-    if a:key == "d"
+    if a:key == "C"
+		for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+			let g:_c64cosmin_Harpwn_WindowList[it] = -1
+			let g:_c64cosmin_Harpwn_BufferList[it] = -1
+		endfor
+        call g:_c64cosmin_Harpwn_MenuBufferFill()
+    endif
+
+    if a:key == "D"
         let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
         let g:_c64cosmin_Harpwn_WindowList[index] = -1
         let g:_c64cosmin_Harpwn_BufferList[index] = -1
+        call g:_c64cosmin_Harpwn_MenuBufferFill()
+    endif
+
+    if a:key == "?"
+		let g:_c64cosmin_Harpwn_ShowHelp = 1 - g:_c64cosmin_Harpwn_ShowHelp
         call g:_c64cosmin_Harpwn_MenuBufferFill()
     endif
 
@@ -289,3 +323,5 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
     endif
     return index - 1
 endfunction
+
+call _c64cosmin_Harpwn_Init()
