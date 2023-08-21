@@ -10,6 +10,9 @@ function! _c64cosmin_Harpwn_Init()
 		let g:_c64cosmin_Harpwn_MenuWinID = -1
 		let g:_c64cosmin_Harpwn_MenuBufferID = -1
 		let g:_c64cosmin_Harpwn_Initialized = 1
+		if get(g:, "Harpwn_DontShowTip") == 1
+			let g:_c64cosmin_Harpwn_ShowHelpTip = 0
+		endif
 	endif
 endfunction
 
