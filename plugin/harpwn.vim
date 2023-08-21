@@ -137,7 +137,8 @@ function! _c64cosmin_Harpwn_Menu()
         return
     endif
 
-    let entry_list = _c64cosmin_Harpwn_MenuBufferFill()
+    let entry_list = _c64cosmin_Harpwn_MenuGetLines()
+	echo entry_list
 
     let options = {
      \  'title' : ' Harpwn '
@@ -169,6 +170,7 @@ function! _c64cosmin_Harpwn_MenuClose(index)
     let g:_c64cosmin_Harpwn_MenuWinID = -1
 endfunction
 
+
 function! _c64cosmin_Harpwn_MenuBufferFill()
     let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
 
@@ -180,6 +182,10 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
     for it in range(0, len(entry_list) - 1)
         call setbufline(bufid, it + 1, entry_list[it])
     endfor
+
+	if has('nvim')
+		call luaeval("_c64cosmin_Lua_Harpwn_PopupRefresh()")
+	endif
 
     return entry_list
 endfunction
@@ -196,7 +202,8 @@ function! _c64cosmin_Harpwn_MenuGetLines()
                 if indexnumber == 10
                     let indexnumber = 0
                 endif
-                let newstring = '[' . indexnumber . '] ' . bufinfo.name
+				let filename = split(bufinfo.name, '/')[-1]
+                let newstring = '[' . indexnumber . '] ' . filename
                 call add(entry_list, newstring)
             endif
         endif
@@ -206,13 +213,21 @@ function! _c64cosmin_Harpwn_MenuGetLines()
         call add(entry_list, "[x] No entries")
     endif
 
-    call add(entry_list, "")
-    if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
-        call add(entry_list, "")
-        call add(entry_list, "?     - Toggle Help")
-    else
-        call add(entry_list, "")
-    endif
+	"nvim's popup is kind bad bad, so we don't do any fancy padding
+	if has("nvim")
+		if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+			call add(entry_list, "")
+			call add(entry_list, "?     - Toggle Help")
+		endif
+	else
+		if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+			call add(entry_list, "")
+			call add(entry_list, "?     - Toggle Help")
+		else
+			call add(entry_list, "")
+		endif
+	endif
+
     if g:_c64cosmin_Harpwn_ShowHelp == 1
         let g:_c64cosmin_Harpwn_ShowHelpTip = 0
         call add(entry_list, "jk    - move up/down")
@@ -239,7 +254,13 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if char2nr(a:key) >= 48 && char2nr(a:key) <= 57
-        call _c64cosmin_Harpwn_Menu_Key_num(a:key)
+		let index = char2nr(a:key) - 48
+		"if 0 is pressed it is actually the last in the array
+		if index == 0
+			let index = 10
+		endif
+
+		call _c64cosmin_Harpwn_MenuClose(index - 1)
     endif
 
     if char2nr(a:key) == 13
@@ -275,16 +296,6 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     return 1
-endfunction
-
-function! _c64cosmin_Harpwn_Menu_Key_num(key)
-    let index = char2nr(a:key) - 48
-    "if 0 is pressed it is actually the last in the array
-    if index == 0
-        let index = 10
-    endif
-
-    call _c64cosmin_Harpwn_MenuClose(index - 1)
 endfunction
 
 function! _c64cosmin_Harpwn_Menu_Key_enter()
@@ -374,6 +385,9 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
     let linestring = getbufline(bufid, line)[0]
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
+	if has('nvim')
+		let index = matchstr(linestring, '{\zs\d\+\ze}')
+	endif
     if index == 0
         let index = 10
     endif
@@ -382,14 +396,13 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
     if has('nvim')
-        echom "Menu doesn't work yet, just use Harpoon bruh"
+        echom "Just use Harpoon bruh"
+
         let l:luainfo = string(a:info)
         let l:luainfo = substitute(l:luainfo, '[', '{', 'g')
         let l:luainfo = substitute(l:luainfo, ']', '}', 'g')
 
         let l:luacommand = "_c64cosmin_Lua_Harpwn_PopupCreate(" . l:luainfo . ")"
-
-        echom "lua " . l:luacommand
 
         call luaeval(l:luacommand)
     else
@@ -399,8 +412,8 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupClose(popupid, option)
     if has('nvim')
-        echom "Just use Harpoon bruh"
-        return
+		call luaeval("_c64cosmin_Lua_Harpwn_PopupClose()")
+		call _c64cosmin_Harpwn_Go(a:option)
     else
         call popup_close(a:popupid, a:option)
     endif
