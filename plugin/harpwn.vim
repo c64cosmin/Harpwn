@@ -327,10 +327,17 @@ function! _c64cosmin_Harpwn_SwapIndices(a, b)
     let g:_c64cosmin_Harpwn_BufferList[a:b] = aux
 endfunction
 
+function! _c64cosmin_Harpwn_MenuGetIndexFromCursor()
+	return getcurpos(g:_c64cosmin_Harpwn_MenuWinID)[1]
+endfunction
+
 function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
-    let line = getcurpos(g:_c64cosmin_Harpwn_MenuWinID)[1]
+    let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
+	echo "line".line
     let linestring = getbufline(g:_c64cosmin_Harpwn_MenuBufferID, line)[0]
+	echo "linestring".linestring
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
+	echo "index".index
     if index == 0
         let index = 10
     endif
@@ -341,7 +348,7 @@ function! _c64cosmin_Harpwn_PopupCreate(info, options)
 	if has('nvim')
 		echo a:info . " " . a:options
 	else
-		call popup_create(a:info, a:options)
+		return popup_create(a:info, a:options)
 	endif
 endfunction
 
