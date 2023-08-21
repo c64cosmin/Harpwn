@@ -227,6 +227,7 @@ function! _c64cosmin_Harpwn_MenuGetLines()
             call add(entry_list, "?     - Toggle Help")
         endif
     else
+        call add(entry_list, "")
         if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
             call add(entry_list, "")
             call add(entry_list, "?     - Toggle Help")
