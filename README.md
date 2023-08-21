@@ -67,6 +67,8 @@ I make video games
 
 [Twitter](http://twitter.com/c64cosmin)
 
+[YouTube](https://www.youtube.com/@c64cosmin)
+
 [HomePage](https://stupidrat.com)
 
 ## License
