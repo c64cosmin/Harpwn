@@ -152,7 +152,7 @@ function! _c64cosmin_Harpwn_Menu()
      \ ,'cursorline': 1
      \ ,'mapping': 1
      \ }
-    let g:_c64cosmin_Harpwn_MenuWinID = popup_create(g:_c64cosmin_Harpwn_MenuBufferID, options)
+    let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(g:_c64cosmin_Harpwn_MenuBufferID, options)
     for it in range(1, g:_c64cosmin_Harpwn_CurrentIndex)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
@@ -162,7 +162,7 @@ endfunction
 
 function! _c64cosmin_Harpwn_MenuClose(index)
     call _c64cosmin_Harpwn_MenuBufferDelete()
-    call popup_close(g:_c64cosmin_Harpwn_MenuWinID, a:index)
+    call _c64cosmin_Harpwn_PopupClose(g:_c64cosmin_Harpwn_MenuWinID, a:index)
 endfunction
 
 function! _c64cosmin_Harpwn_MenuBufferCreate()
@@ -335,6 +335,22 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
         let index = 10
     endif
     return index - 1
+endfunction
+
+function! _c64cosmin_Harpwn_PopupCreate(info, options)
+	if has('nvim')
+		echo a:info . " " . a:options
+	else
+		call popup_create(a:info, a:options)
+	endif
+endfunction
+
+function! _c64cosmin_Harpwn_PopupClose(popupid, option)
+	if has('nvim')
+		echo a:popupid . " " . a:option
+	else
+		call popup_close(a:popupid, a:option)
+	endif
 endfunction
 
 call _c64cosmin_Harpwn_Init()
