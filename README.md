@@ -32,6 +32,7 @@ To get back to that buffer you just press `g{num}`\
 You can move fast through them using `<` and `>`\
 \
 To open the menu you can just use `<Leader>h`\
+\
 
 ```vim
 nmap <silent> <Leader>H :HarpwnAdd<CR>
