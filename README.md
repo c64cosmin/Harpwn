@@ -31,10 +31,10 @@ To open the menu you press `-`
 You can move fast through them using `<` and `>`
 
 ```vim
-nmap <silent> + :HarpwnAdd<CR>
-nmap <silent> - :HarpwnMenu<CR>
-nmap <silent> > :HarpwnNext 1<CR>
-nmap <silent> < :HarpwnNext -1<CR>
+nnoremap <silent> + :HarpwnAdd<CR>
+nnoremap <silent> - :HarpwnMenu<CR>
+nnoremap <silent> > :HarpwnNext 1<CR>
+nnoremap <silent> < :HarpwnNext -1<CR>
 ```
 
 ### Setup with more control
@@ -52,30 +52,30 @@ To open the menu you can just use `<Leader>h`
 
 
 ```vim
-nmap <silent> <Leader>H :HarpwnAdd<CR>
-nmap <silent> <Leader>h :HarpwnMenu<CR>
-nmap <silent> > :HarpwnNext 1<CR>
-nmap <silent> < :HarpwnNext -1<CR>
-nmap <silent> g1 :HarpwnGo 0<CR>
-nmap <silent> g2 :HarpwnGo 1<CR>
-nmap <silent> g3 :HarpwnGo 2<CR>
-nmap <silent> g4 :HarpwnGo 3<CR>
-nmap <silent> g5 :HarpwnGo 4<CR>
-nmap <silent> g6 :HarpwnGo 5<CR>
-nmap <silent> g7 :HarpwnGo 6<CR>
-nmap <silent> g8 :HarpwnGo 7<CR>
-nmap <silent> g9 :HarpwnGo 8<CR>
-nmap <silent> g0 :HarpwnGo 9<CR>
-nmap <silent> <Leader>H1 :HarpwnSet 0<CR>
-nmap <silent> <Leader>H2 :HarpwnSet 1<CR>
-nmap <silent> <Leader>H3 :HarpwnSet 2<CR>
-nmap <silent> <Leader>H4 :HarpwnSet 3<CR>
-nmap <silent> <Leader>H5 :HarpwnSet 4<CR>
-nmap <silent> <Leader>H6 :HarpwnSet 5<CR>
-nmap <silent> <Leader>H7 :HarpwnSet 6<CR>
-nmap <silent> <Leader>H8 :HarpwnSet 7<CR>
-nmap <silent> <Leader>H9 :HarpwnSet 8<CR>
-nmap <silent> <Leader>H0 :HarpwnSet 9<CR>
+nnoremap <silent> <Leader>H :HarpwnAdd<CR>
+nnoremap <silent> <Leader>h :HarpwnMenu<CR>
+nnoremap <silent> > :HarpwnNext 1<CR>
+nnoremap <silent> < :HarpwnNext -1<CR>
+nnoremap <silent> g1 :HarpwnGo 0<CR>
+nnoremap <silent> g2 :HarpwnGo 1<CR>
+nnoremap <silent> g3 :HarpwnGo 2<CR>
+nnoremap <silent> g4 :HarpwnGo 3<CR>
+nnoremap <silent> g5 :HarpwnGo 4<CR>
+nnoremap <silent> g6 :HarpwnGo 5<CR>
+nnoremap <silent> g7 :HarpwnGo 6<CR>
+nnoremap <silent> g8 :HarpwnGo 7<CR>
+nnoremap <silent> g9 :HarpwnGo 8<CR>
+nnoremap <silent> g0 :HarpwnGo 9<CR>
+nnoremap <silent> <Leader>H1 :HarpwnSet 0<CR>
+nnoremap <silent> <Leader>H2 :HarpwnSet 1<CR>
+nnoremap <silent> <Leader>H3 :HarpwnSet 2<CR>
+nnoremap <silent> <Leader>H4 :HarpwnSet 3<CR>
+nnoremap <silent> <Leader>H5 :HarpwnSet 4<CR>
+nnoremap <silent> <Leader>H6 :HarpwnSet 5<CR>
+nnoremap <silent> <Leader>H7 :HarpwnSet 6<CR>
+nnoremap <silent> <Leader>H8 :HarpwnSet 7<CR>
+nnoremap <silent> <Leader>H9 :HarpwnSet 8<CR>
+nnoremap <silent> <Leader>H0 :HarpwnSet 9<CR>
 ```
 
 ## Self-Promotion

@@ -135,6 +135,11 @@ function! _c64cosmin_Harpwn_Add()
 endfunction
 
 function! _c64cosmin_Harpwn_Menu()
+	if g:_c64cosmin_Harpwn_MenuWinID != -1
+		_c64cosmin_Harpwn_MenuClose()
+		return
+	endif
+
     call _c64cosmin_Harpwn_MenuBufferCreate()
     let entry_list = _c64cosmin_Harpwn_MenuBufferFill()
 
@@ -163,6 +168,7 @@ endfunction
 function! _c64cosmin_Harpwn_MenuClose(index)
     call _c64cosmin_Harpwn_MenuBufferDelete()
     call _c64cosmin_Harpwn_PopupClose(g:_c64cosmin_Harpwn_MenuWinID, a:index)
+	let g:_c64cosmin_Harpwn_MenuWinID = -1
 endfunction
 
 function! _c64cosmin_Harpwn_MenuBufferCreate()
@@ -266,11 +272,15 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if a:key == "\<Up>" || a:key == "k"
-        call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
+		if _c64cosmin_Harpwn_MenuGetIndexFromCursor() > 1
+			call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
+		endif
     endif
 
     if a:key == "\<Down>" || a:key == "j"
-        call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
+		if _c64cosmin_Harpwn_MenuGetIndexFromCursor() < _c64cosmin_Harpwn_MenuGetLineCount()
+			call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
+		endif
     endif
 
     if a:key == "K"
@@ -331,13 +341,20 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromCursor()
 	return getcurpos(g:_c64cosmin_Harpwn_MenuWinID)[1]
 endfunction
 
+function! _c64cosmin_Harpwn_MenuGetLineCount()
+	let l:count = 0
+	for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+		if g:_c64cosmin_Harpwn_WindowList[it] != -1
+			let l:count = l:count + 1
+		endif
+	endfor
+	return l:count
+endfunction
+
 function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
-	echo "line".line
     let linestring = getbufline(g:_c64cosmin_Harpwn_MenuBufferID, line)[0]
-	echo "linestring".linestring
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
-	echo "index".index
     if index == 0
         let index = 10
     endif
