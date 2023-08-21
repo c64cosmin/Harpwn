@@ -3,6 +3,7 @@ let g:_c64cosmin_Harpwn_MenuBufferName = "_c64cosmin_Harpwn_Menu_Buffer"
 function! _c64cosmin_Harpwn_Init()
 	if get(g:, "_c64cosmin_Harpwn_Initialized") != 1
 		let g:_c64cosmin_Harpwn_ShowHelp = 0
+		let g:_c64cosmin_Harpwn_ShowHelpTip = 1
 		let g:_c64cosmin_Harpwn_CurrentIndex = 0
 		let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 		let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
@@ -140,7 +141,7 @@ function! _c64cosmin_Harpwn_Menu()
      \ ,'filter': '_c64cosmin_Harpwn_MenuFilter'
      \ ,'borderchars': ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
      \ ,'border': [1,1,1,1]
-     \ ,'padding': [2,3,2,3]
+     \ ,'padding': [2,5,0,5]
      \ ,'pos': 'center'
      \ ,'zindex': 200
      \ ,'drag': 1
@@ -207,9 +208,14 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
 	endif
 
 	call add(entry_list, "")
-	call add(entry_list, "")
-	call add(entry_list, "?     - Toggle Help")
+	if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+		call add(entry_list, "")
+		call add(entry_list, "?     - Toggle Help")
+	else
+		call add(entry_list, "")
+	endif
 	if g:_c64cosmin_Harpwn_ShowHelp == 1
+		let g:_c64cosmin_Harpwn_ShowHelpTip = 0
 		call add(entry_list, "jk    - move up/down")
 		call add(entry_list, "JK    - move entry up/down")
 		call add(entry_list, "D     - delete entry")
