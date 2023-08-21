@@ -1,5 +1,3 @@
-print ("plm")
-
 function _c64cosmin_Lua_Harpwn_PopupCreate(lines_list)
     local bufid = vim.api.nvim_create_buf(true, true)
 

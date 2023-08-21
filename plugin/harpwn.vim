@@ -10,6 +10,11 @@ function! _c64cosmin_Harpwn_Init()
         if get(g:, "Harpwn_DontShowTip") == 1
             let g:_c64cosmin_Harpwn_ShowHelpTip = 0
         endif
+
+		"poor thing
+		if has('nvim')
+			lua require('harpwn')
+		endif
     endif
 endfunction
 
