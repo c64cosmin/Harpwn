@@ -1,12 +1,26 @@
 # Harpwn
 Harpoon wanna be
 
-It kind of works on NeoVim
-
-But you should install the original lol 
-[Harpoon](https://github.com/ThePrimeagen/harpoon)
-
 ![Harpwn](harpwn.png)
+
+## Descriptions
+
+In case you don't know what Harpoon is
+
+It is buffer/windows manager, this is a clone that work on Vim
+
+doesn't have all the features the original does
+[Harpoon](https://github.com/ThePrimeagen/harpoon)
+, also Harpoon only works on Neovim, mine kind of work on Neovim, but it super buggy and I gave up on trying to fix it.
+
+Popups are now available on neovim. :(
+
+This plugin allows you to pin up to 10 buffers/windows
+
+Then you can either cycle thru them very fast or use the menu to jump to them using the number keys from 1 to 0
+
+Unfortunately this is my first plugin and I don't know how to do persistence in order to keep the pinned files in the list, especially if used across multiple sessions...
+
 
 ### Instalation
 
