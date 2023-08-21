@@ -364,6 +364,7 @@ endfunction
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
 	if has('nvim')
 		echo a:info . " " . a:options
+		echo "Doesn't work for Neovim yet :("
 	else
 		return popup_create(a:info, a:options)
 	endif
@@ -372,6 +373,7 @@ endfunction
 function! _c64cosmin_Harpwn_PopupClose(popupid, option)
 	if has('nvim')
 		echo a:popupid . " " . a:option
+		echo "Doesn't work for Neovim yet :("
 	else
 		call popup_close(a:popupid, a:option)
 	endif
