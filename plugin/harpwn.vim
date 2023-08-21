@@ -346,11 +346,20 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
 	if has('nvim')
+		echom "mam " . a:info
+		let l:luainfo = "{"
+		for it in range(0, len(info) - 1)
+			if it > 0
+				let l:luainfo = l:luainfo . ','
+			endif
+			let l:luainfo = l:luainfo . a:info[it]
+		endfor
+		let l:luainfo = l:luainfo . '}'
+		echom "spoj " . l:luainfo
 		for [key, value] in items(a:options)
 			echo key . ': ' . value
 		endfor
-		echo "glorf " . a:info
-		echo "Doesn't work for Neovim yet :("
+		lua("require'popup'.create({'test','testset','tsetsetset'}," . a:options .")")
 	else
 		return popup_create(a:info, a:options)
 	endif
