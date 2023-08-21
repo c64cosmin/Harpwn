@@ -136,7 +136,7 @@ endfunction
 
 function! _c64cosmin_Harpwn_Menu()
 	if g:_c64cosmin_Harpwn_MenuWinID != -1
-		call _c64cosmin_Harpwn_MenuClose()
+		call _c64cosmin_Harpwn_MenuClose(-1)
 		return
 	endif
 
