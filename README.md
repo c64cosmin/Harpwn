@@ -1,6 +1,11 @@
 # Harpwn
 Harpoon wanna be
 
+It kind of works on NeoVim
+
+But you should install the original lol 
+[Harpoon](https://github.com/ThePrimeagen/harpoon)
+
 ![Harpwn](harpwn.png)
 
 ### Instalation
