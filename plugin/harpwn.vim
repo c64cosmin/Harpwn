@@ -177,7 +177,6 @@ function! _c64cosmin_Harpwn_MenuBufferCreate()
 endfunction
 
 function! _c64cosmin_Harpwn_MenuBufferDelete()
-	echo g:_c64cosmin_Harpwn_MenuBufferName . "," . bufexists(g:_c64cosmin_Harpwn_MenuBufferName)
     if g:_c64cosmin_Harpwn_MenuBufferID != -1
         exec "bwipeout! " . g:_c64cosmin_Harpwn_MenuBufferName
         let g:_c64cosmin_Harpwn_MenuBufferID = -1
