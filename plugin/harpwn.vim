@@ -138,7 +138,6 @@ function! _c64cosmin_Harpwn_Menu()
     endif
 
     let entry_list = _c64cosmin_Harpwn_MenuGetLines()
-	echo entry_list
 
     let options = {
      \  'title' : ' Harpwn '
@@ -157,8 +156,13 @@ function! _c64cosmin_Harpwn_Menu()
 
     let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(entry_list, options)
 
+	"neovim wines a lot
+	let end = g:_c64cosmin_Harpwn_CurrentIndex
+	if g:_c64cosmin_Harpwn_CurrentIndex == -1
+		let end = 0
+	endif
     "put cursor to last jump
-    for it in range(1, g:_c64cosmin_Harpwn_CurrentIndex)
+    for it in range(1, end)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
         endif
@@ -317,6 +321,7 @@ endfunction
 
 function! _c64cosmin_Harpwn_Menu_Key_K()
     let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
+	echom index
     if index > 0
         if g:_c64cosmin_Harpwn_WindowList[index - 1] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
@@ -385,9 +390,7 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
     let linestring = getbufline(bufid, line)[0]
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
-	if has('nvim')
-		let index = matchstr(linestring, '{\zs\d\+\ze}')
-	endif
+	echom "well " . index
     if index == 0
         let index = 10
     endif
@@ -398,13 +401,17 @@ function! _c64cosmin_Harpwn_PopupCreate(info, options)
     if has('nvim')
         echom "Just use Harpoon bruh"
 
+		echom a:info
         let l:luainfo = string(a:info)
         let l:luainfo = substitute(l:luainfo, '[', '{', 'g')
         let l:luainfo = substitute(l:luainfo, ']', '}', 'g')
+		let l:luainfo = substitute(l:luainfo, '{\(.\)} ', '[\1] ', 'g')
+		echom "mada " . l:luainfo
 
         let l:luacommand = "_c64cosmin_Lua_Harpwn_PopupCreate(" . l:luainfo . ")"
 
-        call luaeval(l:luacommand)
+        return luaeval(l:luacommand)
+		call _c64cosmin_Harpwn_MenuBufferFill()
     else
         return popup_create(a:info, a:options)
     endif
