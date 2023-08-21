@@ -69,9 +69,13 @@ I make video games
 
 [YouTube](https://www.youtube.com/@c64cosmin)
 
+You can play some free games here\
+No download, directly in browser\
+Hope you get a high score in the leader board :D
+
 [HomePage](https://stupidrat.com)
 
 ## License
 
-Copyright (c) c64cosmin.  Distributed under the same terms as Vim itself.
+Copyright (c) Cosmin MUNTEANU.  Distributed under the same terms as Vim itself.
 See `:help license`.

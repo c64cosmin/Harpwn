@@ -1,6 +1,6 @@
 *harpwn.txt* Clone to Harpoon
 
-Author:  Cosmin Munteanu <https://stupidrat.com>
+Author:  Cosmin MUNTEANU <https://stupidrat.com>
 License: Same terms as Vim itself (see |license|)
 
 
