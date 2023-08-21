@@ -239,75 +239,111 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if char2nr(a:key) >= 48 && char2nr(a:key) <= 57
-        let index = char2nr(a:key) - 48
-        "if 0 is pressed it is actually the last in the array
-        if index == 0
-            let index = 10
-        endif
-
-        call _c64cosmin_Harpwn_MenuClose(index - 1)
+        call _c64cosmin_Harpwn_Menu_Key_num(a:key)
     endif
 
     if char2nr(a:key) == 13
-        let index = _c64cosmin_Harpwn_MenuGetIndexFromLine()
-        call _c64cosmin_Harpwn_MenuClose(index)
+        call _c64cosmin_Harpwn_Menu_Key_enter()
     endif
 
     if a:key == "\<Up>" || a:key == "k"
-        if _c64cosmin_Harpwn_MenuGetIndexFromCursor() > 1
-            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
-        endif
+        call _c64cosmin_Harpwn_Menu_Key_k()
     endif
 
     if a:key == "\<Down>" || a:key == "j"
-        if _c64cosmin_Harpwn_MenuGetIndexFromCursor() < _c64cosmin_Harpwn_MenuGetLineCount()
-            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
-        endif
+        call _c64cosmin_Harpwn_Menu_Key_j()
     endif
 
     if a:key == "K"
-        let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
-        if index > 0
-            if g:_c64cosmin_Harpwn_WindowList[index - 1] != -1
-                call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
-            endif
-            call _c64cosmin_Harpwn_SwapIndices(index - 1, index)
-            call g:_c64cosmin_Harpwn_MenuBufferFill()
-        endif
+        call _c64cosmin_Harpwn_Menu_Key_K()
     endif
 
     if a:key == "J"
-        let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
-        if index < len(g:_c64cosmin_Harpwn_WindowList) - 1
-            if g:_c64cosmin_Harpwn_WindowList[index + 1] != -1
-                call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
-            endif
-            call _c64cosmin_Harpwn_SwapIndices(index + 1, index)
-            call g:_c64cosmin_Harpwn_MenuBufferFill()
-        endif
+        call _c64cosmin_Harpwn_Menu_Key_J()
     endif
 
     if a:key == "C"
-        for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
-            let g:_c64cosmin_Harpwn_WindowList[it] = -1
-            let g:_c64cosmin_Harpwn_BufferList[it] = -1
-        endfor
-        call g:_c64cosmin_Harpwn_MenuBufferFill()
+        call _c64cosmin_Harpwn_Menu_Key_C()
     endif
 
     if a:key == "D"
-        let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
-        let g:_c64cosmin_Harpwn_WindowList[index] = -1
-        let g:_c64cosmin_Harpwn_BufferList[index] = -1
-        call g:_c64cosmin_Harpwn_MenuBufferFill()
+        call _c64cosmin_Harpwn_Menu_Key_D()
     endif
 
     if a:key == "?"
-        let g:_c64cosmin_Harpwn_ShowHelp = 1 - g:_c64cosmin_Harpwn_ShowHelp
-        call g:_c64cosmin_Harpwn_MenuBufferFill()
+        call _c64cosmin_Harpwn_Menu_Key_help()
     endif
 
     return 1
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_num(key)
+    let index = char2nr(a:key) - 48
+    "if 0 is pressed it is actually the last in the array
+    if index == 0
+        let index = 10
+    endif
+
+    call _c64cosmin_Harpwn_MenuClose(index - 1)
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_enter()
+    let index = _c64cosmin_Harpwn_MenuGetIndexFromLine()
+    call _c64cosmin_Harpwn_MenuClose(index)
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_k()
+    if _c64cosmin_Harpwn_MenuGetIndexFromCursor() > 1
+        call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
+    endif
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_j()
+    if _c64cosmin_Harpwn_MenuGetIndexFromCursor() < _c64cosmin_Harpwn_MenuGetLineCount()
+        call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
+    endif
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_K()
+    let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
+    if index > 0
+        if g:_c64cosmin_Harpwn_WindowList[index - 1] != -1
+            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
+        endif
+        call _c64cosmin_Harpwn_SwapIndices(index - 1, index)
+        call g:_c64cosmin_Harpwn_MenuBufferFill()
+    endif
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_J()
+    let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
+    if index < len(g:_c64cosmin_Harpwn_WindowList) - 1
+        if g:_c64cosmin_Harpwn_WindowList[index + 1] != -1
+            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
+        endif
+        call _c64cosmin_Harpwn_SwapIndices(index + 1, index)
+        call g:_c64cosmin_Harpwn_MenuBufferFill()
+    endif
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_C()
+    for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+        let g:_c64cosmin_Harpwn_WindowList[it] = -1
+        let g:_c64cosmin_Harpwn_BufferList[it] = -1
+    endfor
+    call g:_c64cosmin_Harpwn_MenuBufferFill()
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_D()
+    let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
+    let g:_c64cosmin_Harpwn_WindowList[index] = -1
+    let g:_c64cosmin_Harpwn_BufferList[index] = -1
+    call g:_c64cosmin_Harpwn_MenuBufferFill()
+endfunction
+
+function! _c64cosmin_Harpwn_Menu_Key_help()
+    let g:_c64cosmin_Harpwn_ShowHelp = 1 - g:_c64cosmin_Harpwn_ShowHelp
+    call g:_c64cosmin_Harpwn_MenuBufferFill()
 endfunction
 
 function! _c64cosmin_Harpwn_SwapIndices(a, b)
@@ -347,19 +383,11 @@ endfunction
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
     if has('nvim')
         echom "Menu doesn't work yet, just use Harpoon bruh"
-        return -1
         let l:luainfo = string(a:info)
         let l:luainfo = substitute(l:luainfo, '[', '{', 'g')
         let l:luainfo = substitute(l:luainfo, ']', '}', 'g')
-        let l:luaoptions = string(a:options)
-        let l:luaoptions = substitute(l:luaoptions, '[', '{', 'g')
-        let l:luaoptions = substitute(l:luaoptions, ']', '}', 'g')
-        let l:luaoptions = substitute(l:luaoptions, "'\\([a-zA-Z]*\\)': ", '\1=', 'g')
 
-        echom "spoj" . l:luainfo
-        echom "spoj" . l:luaoptions
-
-        let l:luacommand = "require'popup'.create(" . l:luainfo . "," . l:luaoptions .")"
+        let l:luacommand = "_c64cosmin_Lua_Harpwn_PopupCreate(" . l:luainfo . ")"
 
         echom "lua " . l:luacommand
 
