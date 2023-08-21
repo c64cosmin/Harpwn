@@ -1,16 +1,16 @@
 function! _c64cosmin_Harpwn_Init()
-	if get(g:, "_c64cosmin_Harpwn_Initialized") != 1
-		let g:_c64cosmin_Harpwn_ShowHelp = 0
-		let g:_c64cosmin_Harpwn_ShowHelpTip = 1
-		let g:_c64cosmin_Harpwn_CurrentIndex = 0
-		let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		let g:_c64cosmin_Harpwn_MenuWinID = -1
-		let g:_c64cosmin_Harpwn_Initialized = 1
-		if get(g:, "Harpwn_DontShowTip") == 1
-			let g:_c64cosmin_Harpwn_ShowHelpTip = 0
-		endif
-	endif
+    if get(g:, "_c64cosmin_Harpwn_Initialized") != 1
+        let g:_c64cosmin_Harpwn_ShowHelp = 0
+        let g:_c64cosmin_Harpwn_ShowHelpTip = 1
+        let g:_c64cosmin_Harpwn_CurrentIndex = 0
+        let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+        let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+        let g:_c64cosmin_Harpwn_MenuWinID = -1
+        let g:_c64cosmin_Harpwn_Initialized = 1
+        if get(g:, "Harpwn_DontShowTip") == 1
+            let g:_c64cosmin_Harpwn_ShowHelpTip = 0
+        endif
+    endif
 endfunction
 
 function! _c64cosmin_Harpwn_Set(index)
@@ -132,10 +132,10 @@ function! _c64cosmin_Harpwn_Add()
 endfunction
 
 function! _c64cosmin_Harpwn_Menu()
-	if g:_c64cosmin_Harpwn_MenuWinID != -1
-		call _c64cosmin_Harpwn_MenuClose(-1)
-		return
-	endif
+    if g:_c64cosmin_Harpwn_MenuWinID != -1
+        call _c64cosmin_Harpwn_MenuClose(-1)
+        return
+    endif
 
     let entry_list = _c64cosmin_Harpwn_MenuBufferFill()
 
@@ -156,7 +156,7 @@ function! _c64cosmin_Harpwn_Menu()
 
     let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(entry_list, options)
 
-	"put cursor to last jump
+    "put cursor to last jump
     for it in range(1, g:_c64cosmin_Harpwn_CurrentIndex)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
@@ -166,11 +166,11 @@ endfunction
 
 function! _c64cosmin_Harpwn_MenuClose(index)
     call _c64cosmin_Harpwn_PopupClose(g:_c64cosmin_Harpwn_MenuWinID, a:index)
-	let g:_c64cosmin_Harpwn_MenuWinID = -1
+    let g:_c64cosmin_Harpwn_MenuWinID = -1
 endfunction
 
 function! _c64cosmin_Harpwn_MenuBufferFill()
-	let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
+    let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
 
     let entry_list = _c64cosmin_Harpwn_MenuGetLines()
 
@@ -202,27 +202,27 @@ function! _c64cosmin_Harpwn_MenuGetLines()
         endif
     endfor
 
-	if len(entry_list) == 0
-		call add(entry_list, "[x] No entries")
-	endif
+    if len(entry_list) == 0
+        call add(entry_list, "[x] No entries")
+    endif
 
-	call add(entry_list, "")
-	if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
-		call add(entry_list, "")
-		call add(entry_list, "?     - Toggle Help")
-	else
-		call add(entry_list, "")
-	endif
-	if g:_c64cosmin_Harpwn_ShowHelp == 1
-		let g:_c64cosmin_Harpwn_ShowHelpTip = 0
-		call add(entry_list, "jk    - move up/down")
-		call add(entry_list, "JK    - move entry up/down")
-		call add(entry_list, "D     - delete entry")
-		call add(entry_list, "C     - clear all entries")
-		call add(entry_list, "Enter - open that entry")
-		call add(entry_list, "[num] - open entry with [num] id")
-		call add(entry_list, "q     - close menu")
-	endif
+    call add(entry_list, "")
+    if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+        call add(entry_list, "")
+        call add(entry_list, "?     - Toggle Help")
+    else
+        call add(entry_list, "")
+    endif
+    if g:_c64cosmin_Harpwn_ShowHelp == 1
+        let g:_c64cosmin_Harpwn_ShowHelpTip = 0
+        call add(entry_list, "jk    - move up/down")
+        call add(entry_list, "JK    - move entry up/down")
+        call add(entry_list, "D     - delete entry")
+        call add(entry_list, "C     - clear all entries")
+        call add(entry_list, "Enter - open that entry")
+        call add(entry_list, "[num] - open entry with [num] id")
+        call add(entry_list, "q     - close menu")
+    endif
 
     return entry_list
 endfunction
@@ -254,15 +254,15 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if a:key == "\<Up>" || a:key == "k"
-		if _c64cosmin_Harpwn_MenuGetIndexFromCursor() > 1
-			call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
-		endif
+        if _c64cosmin_Harpwn_MenuGetIndexFromCursor() > 1
+            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
+        endif
     endif
 
     if a:key == "\<Down>" || a:key == "j"
-		if _c64cosmin_Harpwn_MenuGetIndexFromCursor() < _c64cosmin_Harpwn_MenuGetLineCount()
-			call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
-		endif
+        if _c64cosmin_Harpwn_MenuGetIndexFromCursor() < _c64cosmin_Harpwn_MenuGetLineCount()
+            call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
+        endif
     endif
 
     if a:key == "K"
@@ -288,10 +288,10 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if a:key == "C"
-		for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
-			let g:_c64cosmin_Harpwn_WindowList[it] = -1
-			let g:_c64cosmin_Harpwn_BufferList[it] = -1
-		endfor
+        for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+            let g:_c64cosmin_Harpwn_WindowList[it] = -1
+            let g:_c64cosmin_Harpwn_BufferList[it] = -1
+        endfor
         call g:_c64cosmin_Harpwn_MenuBufferFill()
     endif
 
@@ -303,7 +303,7 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if a:key == "?"
-		let g:_c64cosmin_Harpwn_ShowHelp = 1 - g:_c64cosmin_Harpwn_ShowHelp
+        let g:_c64cosmin_Harpwn_ShowHelp = 1 - g:_c64cosmin_Harpwn_ShowHelp
         call g:_c64cosmin_Harpwn_MenuBufferFill()
     endif
 
@@ -320,21 +320,21 @@ function! _c64cosmin_Harpwn_SwapIndices(a, b)
 endfunction
 
 function! _c64cosmin_Harpwn_MenuGetIndexFromCursor()
-	return getcurpos(g:_c64cosmin_Harpwn_MenuWinID)[1]
+    return getcurpos(g:_c64cosmin_Harpwn_MenuWinID)[1]
 endfunction
 
 function! _c64cosmin_Harpwn_MenuGetLineCount()
-	let l:count = 0
-	for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
-		if g:_c64cosmin_Harpwn_WindowList[it] != -1
-			let l:count = l:count + 1
-		endif
-	endfor
-	return l:count
+    let l:count = 0
+    for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+        if g:_c64cosmin_Harpwn_WindowList[it] != -1
+            let l:count = l:count + 1
+        endif
+    endfor
+    return l:count
 endfunction
 
 function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
-	let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
+    let bufid = winbufnr(g:_c64cosmin_Harpwn_MenuWinID)
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
     let linestring = getbufline(bufid, line)[0]
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
@@ -345,33 +345,37 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
 endfunction
 
 function! _c64cosmin_Harpwn_PopupCreate(info, options)
-	if has('nvim')
-		echom "mam " . a:info
-		let l:luainfo = "{"
-		for it in range(0, len(info) - 1)
-			if it > 0
-				let l:luainfo = l:luainfo . ','
-			endif
-			let l:luainfo = l:luainfo . a:info[it]
-		endfor
-		let l:luainfo = l:luainfo . '}'
-		echom "spoj " . l:luainfo
-		for [key, value] in items(a:options)
-			echo key . ': ' . value
-		endfor
-		lua("require'popup'.create({'test','testset','tsetsetset'}," . a:options .")")
-	else
-		return popup_create(a:info, a:options)
-	endif
+    if has('nvim')
+        echom "Menu doesn't work yet, just use Harpoon bruh"
+        return -1
+        let l:luainfo = string(a:info)
+        let l:luainfo = substitute(l:luainfo, '[', '{', 'g')
+        let l:luainfo = substitute(l:luainfo, ']', '}', 'g')
+        let l:luaoptions = string(a:options)
+        let l:luaoptions = substitute(l:luaoptions, '[', '{', 'g')
+        let l:luaoptions = substitute(l:luaoptions, ']', '}', 'g')
+        let l:luaoptions = substitute(l:luaoptions, "'\\([a-zA-Z]*\\)': ", '\1=', 'g')
+
+        echom "spoj" . l:luainfo
+        echom "spoj" . l:luaoptions
+
+        let l:luacommand = "require'popup'.create(" . l:luainfo . "," . l:luaoptions .")"
+
+        echom "lua " . l:luacommand
+
+        call luaeval(l:luacommand)
+    else
+        return popup_create(a:info, a:options)
+    endif
 endfunction
 
 function! _c64cosmin_Harpwn_PopupClose(popupid, option)
-	if has('nvim')
-		echom "glorg " . a:popupid . " " . a:option
-		echo "Doesn't work for Neovim yet :("
-	else
-		call popup_close(a:popupid, a:option)
-	endif
+    if has('nvim')
+        echom "Just use Harpoon bruh"
+        return
+    else
+        call popup_close(a:popupid, a:option)
+    endif
 endfunction
 
 call _c64cosmin_Harpwn_Init()
