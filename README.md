@@ -26,13 +26,13 @@ This is my own configuration
 
 To add a new buffer just press `+`
 
-To open the menu you press `=`
+To open the menu you press `-`
 
 You can move fast through them using `<` and `>`
 
 ```vim
 nmap <silent> + :HarpwnAdd<CR>
-nmap <silent> = :HarpwnMenu<CR>
+nmap <silent> - :HarpwnMenu<CR>
 nmap <silent> > :HarpwnNext 1<CR>
 nmap <silent> < :HarpwnNext -1<CR>
 ```
