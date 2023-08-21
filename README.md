@@ -21,12 +21,17 @@ To get more info directly in Vim
 ### Easy setup
 
 This is my own configuration\
-You can assign a buffer to a number by tapping `<Leader>h{num}`\
+\
+To assign the current buffer to the list just press `<Leader>H`\
+\
+You can also assign a buffer to a number key by tapping `<Leader>H{num}`\
 This will assign the current opened buffer to {num}\
 \
 To get back to that buffer you just press `g{num}`\
 \
-You can move fast through them using < and >\
+You can move fast through them using `<` and `>`\
+\
+To open the menu you can just use `<Leader>h`\
 
 ```vim
 nmap <silent> <Leader>H :HarpwnAdd<CR>
