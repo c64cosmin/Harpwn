@@ -156,17 +156,20 @@ function! _c64cosmin_Harpwn_Menu()
 
     let g:_c64cosmin_Harpwn_MenuWinID = _c64cosmin_Harpwn_PopupCreate(entry_list, options)
 
-	"neovim wines a lot
-	let end = g:_c64cosmin_Harpwn_CurrentIndex
-	if g:_c64cosmin_Harpwn_CurrentIndex == -1
-		let end = 0
-	endif
+    call _c64cosmin_Harpwn_MenuBufferFill()
+
+    "neovim wines a lot
+    let end = g:_c64cosmin_Harpwn_CurrentIndex
+    if g:_c64cosmin_Harpwn_CurrentIndex == -1
+        let end = 0
+    endif
     "put cursor to last jump
     for it in range(1, end)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
         endif
     endfor
+
 endfunction
 
 function! _c64cosmin_Harpwn_MenuClose(index)
@@ -187,9 +190,9 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
         call setbufline(bufid, it + 1, entry_list[it])
     endfor
 
-	if has('nvim')
-		call luaeval("_c64cosmin_Lua_Harpwn_PopupRefresh()")
-	endif
+    if has('nvim')
+        call luaeval("_c64cosmin_Lua_Harpwn_PopupRefresh()")
+    endif
 
     return entry_list
 endfunction
@@ -206,7 +209,7 @@ function! _c64cosmin_Harpwn_MenuGetLines()
                 if indexnumber == 10
                     let indexnumber = 0
                 endif
-				let filename = split(bufinfo.name, '/')[-1]
+                let filename = split(bufinfo.name, '/')[-1]
                 let newstring = '[' . indexnumber . '] ' . filename
                 call add(entry_list, newstring)
             endif
@@ -217,20 +220,20 @@ function! _c64cosmin_Harpwn_MenuGetLines()
         call add(entry_list, "[x] No entries")
     endif
 
-	"nvim's popup is kind bad bad, so we don't do any fancy padding
-	if has("nvim")
-		if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
-			call add(entry_list, "")
-			call add(entry_list, "?     - Toggle Help")
-		endif
-	else
-		if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
-			call add(entry_list, "")
-			call add(entry_list, "?     - Toggle Help")
-		else
-			call add(entry_list, "")
-		endif
-	endif
+    "nvim's popup is kind bad bad, so we don't do any fancy padding
+    if has("nvim")
+        if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+            call add(entry_list, "")
+            call add(entry_list, "?     - Toggle Help")
+        endif
+    else
+        if g:_c64cosmin_Harpwn_ShowHelpTip == 1 || g:_c64cosmin_Harpwn_ShowHelp == 1
+            call add(entry_list, "")
+            call add(entry_list, "?     - Toggle Help")
+        else
+            call add(entry_list, "")
+        endif
+    endif
 
     if g:_c64cosmin_Harpwn_ShowHelp == 1
         let g:_c64cosmin_Harpwn_ShowHelpTip = 0
@@ -258,13 +261,13 @@ function! _c64cosmin_Harpwn_MenuFilter(winid, key)
     endif
 
     if char2nr(a:key) >= 48 && char2nr(a:key) <= 57
-		let index = char2nr(a:key) - 48
-		"if 0 is pressed it is actually the last in the array
-		if index == 0
-			let index = 10
-		endif
+        let index = char2nr(a:key) - 48
+        "if 0 is pressed it is actually the last in the array
+        if index == 0
+            let index = 10
+        endif
 
-		call _c64cosmin_Harpwn_MenuClose(index - 1)
+        call _c64cosmin_Harpwn_MenuClose(index - 1)
     endif
 
     if char2nr(a:key) == 13
@@ -321,7 +324,6 @@ endfunction
 
 function! _c64cosmin_Harpwn_Menu_Key_K()
     let index = g:_c64cosmin_Harpwn_MenuGetIndexFromLine()
-	echom index
     if index > 0
         if g:_c64cosmin_Harpwn_WindowList[index - 1] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! k')
@@ -390,7 +392,6 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
     let line = _c64cosmin_Harpwn_MenuGetIndexFromCursor()
     let linestring = getbufline(bufid, line)[0]
     let index = matchstr(linestring, '\[\zs\d\+\ze\]')
-	echom "well " . index
     if index == 0
         let index = 10
     endif
@@ -401,17 +402,14 @@ function! _c64cosmin_Harpwn_PopupCreate(info, options)
     if has('nvim')
         echom "Just use Harpoon bruh"
 
-		echom a:info
         let l:luainfo = string(a:info)
         let l:luainfo = substitute(l:luainfo, '[', '{', 'g')
         let l:luainfo = substitute(l:luainfo, ']', '}', 'g')
-		let l:luainfo = substitute(l:luainfo, '{\(.\)} ', '[\1] ', 'g')
-		echom "mada " . l:luainfo
+        let l:luainfo = substitute(l:luainfo, '{\(.\)} ', '[\1] ', 'g')
 
         let l:luacommand = "_c64cosmin_Lua_Harpwn_PopupCreate(" . l:luainfo . ")"
 
         return luaeval(l:luacommand)
-		call _c64cosmin_Harpwn_MenuBufferFill()
     else
         return popup_create(a:info, a:options)
     endif
@@ -419,8 +417,8 @@ endfunction
 
 function! _c64cosmin_Harpwn_PopupClose(popupid, option)
     if has('nvim')
-		call luaeval("_c64cosmin_Lua_Harpwn_PopupClose()")
-		call _c64cosmin_Harpwn_Go(a:option)
+        call luaeval("_c64cosmin_Lua_Harpwn_PopupClose()")
+        call _c64cosmin_Harpwn_MenuSelect(a:popupid, a:option)
     else
         call popup_close(a:popupid, a:option)
     endif
