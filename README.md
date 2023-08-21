@@ -3,8 +3,7 @@ Harpoon wanna be
 
 ### Instalation
 
-I don't know how other plugin managers work
-
+I don't know how other plugin managers work\
 But here is copy paste for you
 
 ```
@@ -21,19 +20,13 @@ To get more info directly in Vim
 
 ### Easy setup
 
-This is my own configuration
-
-You can assign a buffer to a number by tapping `<Leader>h{num}`
-
-This will assign the current opened buffer to {num}
-
-
-
-To get back to that buffer you just press `g{num}`
-
-
-
-You can move fast through them using < and >
+This is my own configuration\
+You can assign a buffer to a number by tapping `<Leader>h{num}`\
+This will assign the current opened buffer to {num}\
+\
+To get back to that buffer you just press `g{num}`\
+\
+You can move fast through them using < and >\
 
 ```vim
 nmap <silent> <Leader>H :HarpwnAdd<CR>
