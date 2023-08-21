@@ -1,0 +1,33 @@
+This is a clone to Harpoon
+
+You have 10 entries to which you can assign a buffer
+Limited to 10 because I think that maps well with number on the keyboard
+
+:HarpwnMenu
+	Opens the menu
+	You can use the help by pressing ? in the menu
+	The menu accepts pressing a number from 0 to 9
+	Note that it starts with 1 and ends with 0
+	for the convenience (or lack of) the keyboard layout
+
+:HarpwnAdd
+	To add the current buffer to the list of entires
+	If all 10 entries are full it won't do anything
+
+:HarpwnSet {num}
+	Where {num} is a number from 0 to 9
+	This will overwrite the entry
+
+:HarpwnGo {num}
+	To jump to a saved buffer
+	If the buffer's window has been closed
+	it will look for another window that has the buffer open
+	if not found it will open the buffer in a new tab
+
+:HarpwnNext {num}
+	Going thru the valid entries in the list you can use
+	If {num} is 1 it will go to the next entry and cycle from start
+	If {num} is -1 it will go to the previous entry and cycle from end
+
+:HarpwnDelete {num}
+	Will delete the entry at position {num}
