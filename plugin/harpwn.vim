@@ -20,6 +20,11 @@ function! _c64cosmin_Harpwn_Set(index)
     echo 'Saved to index ' . a:index
 endfunction
 
+function! _c64cosmin_Harpwn_Delete(index)
+    let g:_c64cosmin_Harpwn_WindowList[a:index] = -1
+    let g:_c64cosmin_Harpwn_BufferList[a:index] = -1
+endfunction
+
 function! _c64cosmin_Harpwn_Go(index)
     let g:_c64cosmin_Harpwn_CurrentIndex = a:index
     let winid = g:_c64cosmin_Harpwn_WindowList[a:index]
@@ -161,13 +166,14 @@ function! _c64cosmin_Harpwn_MenuBufferCreate()
         exec "badd " . g:_c64cosmin_Harpwn_MenuBufferName
         let g:_c64cosmin_Harpwn_MenuBufferID = bufnr(g:_c64cosmin_Harpwn_MenuBufferName)
         call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&hidden', 1)
-        call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&readonly', 1)
         call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&buflisted', 0)
+        call setbufvar(g:_c64cosmin_Harpwn_MenuBufferID, '&buftype', 'nowrite')
     endif
     let g:_c64cosmin_Harpwn_MenuBufferID = bufnr(g:_c64cosmin_Harpwn_MenuBufferName)
 endfunction
 
 function! _c64cosmin_Harpwn_MenuBufferDelete()
+	echo g:_c64cosmin_Harpwn_MenuBufferName . "," . bufexists(g:_c64cosmin_Harpwn_MenuBufferName)
     if g:_c64cosmin_Harpwn_MenuBufferID != -1
         exec "bwipeout! " . g:_c64cosmin_Harpwn_MenuBufferName
         let g:_c64cosmin_Harpwn_MenuBufferID = -1
@@ -199,7 +205,6 @@ function! _c64cosmin_Harpwn_MenuBufferFill()
 	if len(entry_list) == 0
 		call add(entry_list, "[x] No entries")
 	endif
-
 
 	call add(entry_list, "")
 	call add(entry_list, "")
@@ -325,3 +330,10 @@ function! _c64cosmin_Harpwn_MenuGetIndexFromLine()
 endfunction
 
 call _c64cosmin_Harpwn_Init()
+
+command! -nargs=0 HarpwnAdd call _c64cosmin_Harpwn_Add()
+command! -nargs=0 HarpwnMenu call _c64cosmin_Harpwn_Menu()
+command! -nargs=1 HarpwnNext call _c64cosmin_Harpwn_Next(<q-args>)
+command! -nargs=1 HarpwnGo call _c64cosmin_Harpwn_Go(<q-args>)
+command! -nargs=1 HarpwnSet call _c64cosmin_Harpwn_Set(<q-args>)
+command! -nargs=1 HarpwnDelete call _c64cosmin_Harpwn_Delete(<q-args>)
