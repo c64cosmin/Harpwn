@@ -171,7 +171,7 @@ function! _c64cosmin_Harpwn_Menu()
     call _c64cosmin_Harpwn_MenuBufferFill()
 
     "neovim wines a lot
-    let end = g:_c64cosmin_Harpwn_CurrentIndex - 1
+    let end = g:_c64cosmin_Harpwn_CurrentIndex
     if end < 0
         let end = 0
     endif
@@ -497,7 +497,7 @@ function! _c64cosmin_Harpwn_ReadSession()
     endfor
     exec "q!"
 
-    let g:_c64cosmin_Harpwn_CurrentIndex = 0
+    let g:_c64cosmin_Harpwn_CurrentIndex = -1
 endfunction
 
 call _c64cosmin_Harpwn_Init()
