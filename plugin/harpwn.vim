@@ -6,7 +6,7 @@ function! _c64cosmin_Harpwn_Init()
         let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         let g:_c64cosmin_Harpwn_MenuWinID = -1
-        let g:_c64cosmin_Harpwn_Session = {}
+        let g:_c64cosmin_Harpwn_Session = {"":{}}
         let g:_c64cosmin_Harpwn_Initialized = 1
         if get(g:, "Harpwn_DontShowTip") == 1
             let g:_c64cosmin_Harpwn_ShowHelpTip = 0
@@ -16,6 +16,12 @@ function! _c64cosmin_Harpwn_Init()
 		if has('nvim')
 			lua require('harpwn')
 		endif
+
+        "init session file
+        let filename = expand("$HOME/.vim/harpwn.pwn")
+        if !filereadable(filename)
+            call writefile([json_encode(g:_c64cosmin_Harpwn_Session)], filename)
+        endif
     endif
 endfunction
 
