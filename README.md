@@ -49,14 +49,34 @@ To open the menu you press `-`
 
 You can move fast through them using `<` and `>`
 
+#### Without session autoload
+
 ```vim
 nnoremap <silent> + :HarpwnAdd<CR>
 nnoremap <silent> - :HarpwnMenu<CR>
 nnoremap <silent> > :HarpwnNext 1<CR>
 nnoremap <silent> < :HarpwnNext -1<CR>
+```
 
-autocmd VimLeave * HarpwnSave
-autocmd SessionLoadPost * HarpwnLoad
+#### With session autoload
+
+```vim
+nnoremap <silent> + :HarpwnAdd<CR>
+nnoremap <silent> - :call HarpwnMenuOpen()<CR>
+nnoremap <silent> > :HarpwnNext 1<CR>
+nnoremap <silent> < :HarpwnNext -1<CR>
+
+"this autoloads the session when you open the menu
+let g:HarpwnLoaded = 0
+autocmd SessionLoadPost * let g:HarpwnLoaded = 0
+autocmd VimLeave * exec "HarpwnSave"
+function! HarpwnMenuOpen()
+	if g:HarpwnLoaded == 0
+		call _c64cosmin_Harpwn_ReadSession()
+		let g:HarpwnLoaded = 1
+	endif
+	call _c64cosmin_Harpwn_Menu()
+endfunction
 ```
 
 ### Setup with more control
