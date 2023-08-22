@@ -37,3 +37,13 @@ Limited to 10 because I think that maps well with number on the keyboard
 
 :HarpwnDelete {num}                                          *harpwndelete*
 	Will delete the entry at position {num}
+
+:HarpwnSave                                                  *harpwnsave*
+	Will save the current session to disk
+	This depends on the current .git project
+	The session file is saved to ~/.vim/harpwn.pwn
+	Each .git will have it's own entry
+
+:HarpwnLoad                                                  *harpwnload*
+	Will load the session from the disk
+	This depends on the current .git project
