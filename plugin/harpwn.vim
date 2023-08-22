@@ -476,6 +476,10 @@ function! _c64cosmin_Harpwn_ReadSession()
     let bufname = getbufinfo(bufnr())[0].name
     let projname = _c64cosmin_Harpwn_ProjName(bufname)
 
+    if !has_key(g:_c64cosmin_Harpwn_Session, projname)
+        return
+    endif
+
     let proj = g:_c64cosmin_Harpwn_Session[projname]
 
     exec "new"
