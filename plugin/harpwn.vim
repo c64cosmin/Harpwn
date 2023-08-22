@@ -171,17 +171,17 @@ function! _c64cosmin_Harpwn_Menu()
     call _c64cosmin_Harpwn_MenuBufferFill()
 
     "neovim wines a lot
-    let end = g:_c64cosmin_Harpwn_CurrentIndex
-    if g:_c64cosmin_Harpwn_CurrentIndex == -1
+    let end = g:_c64cosmin_Harpwn_CurrentIndex - 1
+    if end < 0
         let end = 0
     endif
+
     "put cursor to last jump
     for it in range(1, end)
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
             call win_execute(g:_c64cosmin_Harpwn_MenuWinID, 'normal! j')
         endif
     endfor
-
 endfunction
 
 function! _c64cosmin_Harpwn_MenuClose(index)
@@ -458,7 +458,7 @@ function! _c64cosmin_Harpwn_WriteSession()
         let name = ""
 
         if g:_c64cosmin_Harpwn_WindowList[it] != -1
-            let itbufid = winbufnr(g:_c64cosmin_Harpwn_WindowList[it])
+            let itbufid = g:_c64cosmin_Harpwn_BufferList[it]
             let name = getbufinfo(itbufid)[0].name
         endif
 
@@ -492,6 +492,8 @@ function! _c64cosmin_Harpwn_ReadSession()
         endif
     endfor
     exec "q!"
+
+    let g:_c64cosmin_Harpwn_CurrentIndex = 0
 endfunction
 
 call _c64cosmin_Harpwn_Init()
