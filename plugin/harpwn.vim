@@ -6,6 +6,7 @@ function! _c64cosmin_Harpwn_Init()
         let g:_c64cosmin_Harpwn_WindowList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         let g:_c64cosmin_Harpwn_BufferList = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         let g:_c64cosmin_Harpwn_MenuWinID = -1
+        let g:_c64cosmin_Harpwn_Session = {}
         let g:_c64cosmin_Harpwn_Initialized = 1
         if get(g:, "Harpwn_DontShowTip") == 1
             let g:_c64cosmin_Harpwn_ShowHelpTip = 0
@@ -430,6 +431,63 @@ function! _c64cosmin_Harpwn_PopupClose(popupid, option)
     endif
 endfunction
 
+function! _c64cosmin_Harpwn_ProjName(dir)
+    return finddir('.git/..', expand(a:dir . ':p:h').';')
+endfunction
+
+function! _c64cosmin_Harpwn_WriteSession()
+    "read the latest file
+    let filename = expand("$HOME/.vim/harpwn.pwn")
+    let lines = readfile(filename)
+    let g:_c64cosmin_Harpwn_Session = json_decode(lines[0])
+
+    let bufname = getbufinfo(bufnr())[0].name
+    let projname = _c64cosmin_Harpwn_ProjName(bufname)
+
+    if !has_key(g:_c64cosmin_Harpwn_Session, projname)
+        let g:_c64cosmin_Harpwn_Session[projname] = {}
+    endif
+
+    for it in range(0, len(g:_c64cosmin_Harpwn_WindowList) - 1)
+        let name = ""
+
+        if g:_c64cosmin_Harpwn_WindowList[it] != -1
+            let itbufid = winbufnr(g:_c64cosmin_Harpwn_WindowList[it])
+            let name = getbufinfo(itbufid)[0].name
+        endif
+
+        let g:_c64cosmin_Harpwn_Session[projname][it] = name
+    endfor
+
+    call writefile([json_encode(g:_c64cosmin_Harpwn_Session)], filename)
+endfunction
+
+function! _c64cosmin_Harpwn_ReadSession()
+    let filename = expand("$HOME/.vim/harpwn.pwn")
+    let lines = readfile(filename)
+    let g:_c64cosmin_Harpwn_Session = json_decode(lines[0])
+
+    let bufname = getbufinfo(bufnr())[0].name
+    let projname = _c64cosmin_Harpwn_ProjName(bufname)
+
+    let proj = g:_c64cosmin_Harpwn_Session[projname]
+
+    exec "new"
+    for it in keys(proj)
+        let name = proj[it]
+
+        if name != ""
+            exec "edit! " . name
+            let g:_c64cosmin_Harpwn_WindowList[it] = win_getid()
+            let g:_c64cosmin_Harpwn_BufferList[it] = bufnr()
+        else
+            let g:_c64cosmin_Harpwn_WindowList[it] = -1
+            let g:_c64cosmin_Harpwn_BufferList[it] = -1
+        endif
+    endfor
+    exec "q!"
+endfunction
+
 call _c64cosmin_Harpwn_Init()
 
 command! -nargs=0 HarpwnAdd call _c64cosmin_Harpwn_Add()
@@ -438,3 +496,5 @@ command! -nargs=1 HarpwnNext call _c64cosmin_Harpwn_Next(<q-args>)
 command! -nargs=1 HarpwnGo call _c64cosmin_Harpwn_Go(<q-args>)
 command! -nargs=1 HarpwnSet call _c64cosmin_Harpwn_Set(<q-args>)
 command! -nargs=1 HarpwnDelete call _c64cosmin_Harpwn_Delete(<q-args>)
+command! -nargs=0 HarpwnSave call _c64cosmin_Harpwn_WriteSession()
+command! -nargs=0 HarpwnLoad call _c64cosmin_Harpwn_ReadSession()
