@@ -54,6 +54,9 @@ nnoremap <silent> + :HarpwnAdd<CR>
 nnoremap <silent> - :HarpwnMenu<CR>
 nnoremap <silent> > :HarpwnNext 1<CR>
 nnoremap <silent> < :HarpwnNext -1<CR>
+
+autocmd VimLeave * HarpwnSave
+autocmd SessionLoadPost * HarpwnLoad
 ```
 
 ### Setup with more control
@@ -95,6 +98,8 @@ nnoremap <silent> <Leader>H7 :HarpwnSet 6<CR>
 nnoremap <silent> <Leader>H8 :HarpwnSet 7<CR>
 nnoremap <silent> <Leader>H9 :HarpwnSet 8<CR>
 nnoremap <silent> <Leader>H0 :HarpwnSet 9<CR>
+nnoremap <silent> <Leader>Hs :HarpwnSave<CR>
+nnoremap <silent> <Leader>Hl :HarpwnLoad<CR>
 ```
 
 ## Self-Promotion
