@@ -12,10 +12,10 @@ function! _c64cosmin_Harpwn_Init()
             let g:_c64cosmin_Harpwn_ShowHelpTip = 0
         endif
 
-		"poor thing
-		if has('nvim')
-			lua require('harpwn')
-		endif
+        "poor thing
+        if has('nvim')
+            lua require('harpwn')
+        endif
 
         "init session file
         let filename = expand("$HOME/.vim/harpwn.pwn")
@@ -77,7 +77,6 @@ function! _c64cosmin_Harpwn_Go(index)
             endfor
 
             "there is not more window with that buffer, open a new window
-            exec 'tab split'
             exec 'buffer' . bufid
             let g:_c64cosmin_Harpwn_WindowList[a:index] = win_getid()
         endif
